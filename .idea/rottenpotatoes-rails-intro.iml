@@ -94,7 +94,7 @@
     <orderEntry type="library" scope="PROVIDED" name="spring (v2.1.0, ruby-2.4.9-p362) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="sprockets (v3.7.2, ruby-2.4.9-p362) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="sprockets-rails (v3.2.1, ruby-2.4.9-p362) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="sqlite3 (v1.4.2, ruby-2.4.9-p362) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="sqlite3 (v1.3.13, ruby-2.4.9-p362) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="temple (v0.8.2, ruby-2.4.9-p362) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="themoviedb (v1.0.1, ruby-2.4.9-p362) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="thor (v1.0.1, ruby-2.4.9-p362) [gem]" level="application" />
