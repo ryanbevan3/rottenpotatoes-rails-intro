@@ -2,6 +2,7 @@
 class MoviesController < ApplicationController
   helper_method :sort_column
   helper_method :highlight
+  helper_method :chosen_rating?
 
   def movie_params
     params.require(:movie).permit(:title, :rating, :description, :release_date)
@@ -15,7 +16,14 @@ class MoviesController < ApplicationController
 
   def index
     @all_ratings = %w[G PG PG-13 R]
-    @movies = Movie.order(sort_column)
+    session[:ratings] = params[:ratings] unless params[:ratings].nil?
+    if !params[:ratings].nil?
+      array_ratings = params[:ratings].keys
+      @movies = Movie.where(rating: array_ratings).order(sort_column)
+    else
+      @movies = Movie.order(sort_column)
+    end
+
   end
 
   def new
@@ -54,6 +62,12 @@ class MoviesController < ApplicationController
 
   def highlight(column)
     'highlight' if sort_column == column
+  end
+
+  def chosen_rating?(rating)
+    chosen_ratings = session[:ratings]
+    return true if chosen_ratings.nil?
+    chosen_ratings.include? rating
   end
 
 end
