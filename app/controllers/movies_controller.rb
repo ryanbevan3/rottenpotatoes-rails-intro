@@ -14,6 +14,7 @@ class MoviesController < ApplicationController
   end
 
   def index
+    @all_ratings = %w[G PG PG-13 R]
     @movies = Movie.order(sort_column)
   end
 
