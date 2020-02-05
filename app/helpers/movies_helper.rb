@@ -6,6 +6,6 @@ module MoviesHelper
 
   # Sorts the movies by column:
   def sortable(column)
-    link_to column.titleize, {:sort => column}
+    link_to column.titleize, sort: column
   end
 end

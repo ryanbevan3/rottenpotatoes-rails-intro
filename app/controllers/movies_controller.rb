@@ -1,6 +1,8 @@
 # Class MoviesController
 class MoviesController < ApplicationController
-  helper_method :sort_column, :sort_direction
+  helper_method :sort_column
+  helper_method :highlight
+
   def movie_params
     params.require(:movie).permit(:title, :rating, :description, :release_date)
   end
@@ -48,4 +50,9 @@ class MoviesController < ApplicationController
   def sort_column
     Movie.column_names.include?(params[:sort]) ? params[:sort] : 'title'
   end
+
+  def highlight(column)
+    'highlight' if sort_column == column
+  end
+
 end
