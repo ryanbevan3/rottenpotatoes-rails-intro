@@ -30,6 +30,8 @@ class MoviesController < ApplicationController
                      else
                        @movies = Movie.all
                      end)
+    else
+      @movies = Movie.all
     end
   end
 
