@@ -1,8 +1,6 @@
 # Class MoviesController
 class MoviesController < ApplicationController
-  helper_method :sort_column
   helper_method :highlight
-  helper_method :chosen_rating?
 
   def movie_params
     params.require(:movie).permit(:title, :rating, :description, :release_date)
@@ -16,16 +14,21 @@ class MoviesController < ApplicationController
 
   def index
     @all_ratings = %w[G PG PG-13 R]
-    if !params[:ratings].nil? && !sort_column.nil?
-      array_ratings = params[:ratings].keys
-      @movies = Movie.where(rating: array_ratings).order(sort_column)
-    elsif !params[:ratings].nil?
-      @movie = Movie.where(rating: array_ratings)
-    elsif !sort_column.nil?
-      @movies = Movie.order(sort_column)
-    else
-      @movies = Movie.all
+    session[:ratings] = params[:ratings] unless params[:ratings].nil?
+    session[:order] = params[:order] unless params[:order].nil?
+    
+    if (params[:ratings].nil? && !session[:ratings].nil?) || (params[:order].nil? && !session[:order].nil?)
+      redirect_to movies_path('ratings' => session[:ratings], 'order' => session[:order])
+    elsif (@movies = if !params[:ratings].nil?
+                       Movie.where(rating: params[:ratings].keys).order(session[:order])
+                     elsif !params[:order].nil?
+                       Movie.all.order(session[:order])
+                     end)
+    elsif !session[:ratings].nil? || !session[:order].nil?
+      redirect_to movies_path('ratings' => session[:ratings], 'order' => session[:order])
     end
+  else
+    @movie = Movie.all
   end
 
   def new
@@ -58,18 +61,7 @@ class MoviesController < ApplicationController
 
   private
 
-  def sort_column
-    Movie.column_names.include?(params[:sort]) ? params[:sort] : 'title'
-  end
-
   def highlight(column)
-    'highlight' if sort_column == column
+    'highlight' if session[:order].to_s == column
   end
-
-  def chosen_rating?(rating)
-    chosen_ratings = session[:ratings]
-    return true if chosen_ratings.nil?
-    chosen_ratings.include? rating
-  end
-
 end

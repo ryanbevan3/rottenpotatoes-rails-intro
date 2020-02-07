@@ -5,19 +5,21 @@
   Include:
   - @all_ratings.each do |rating|
     = rating
-    = check_box_tag "ratings[#{rating}]", 1, chosen_rating?(rating), id: "ratings_#{rating}"
+    = check_box_tag "ratings[#{rating}]"
   = submit_tag 'Refresh', :class => 'btn btn-primary'
 
 %table#movies.table.table-striped.col-md-12
   %thead
     %tr
       %th{:class => highlight('title')}
-        %a#title_header=sortable "title"
+        %a#title_header{:href => movies_path({:order => 'title'})} Movie Title
       %th{:class => highlight('rating')}
-        %a#rating_header=sortable "rating"
+        %a{:href => movies_path({order:  'rating'})} Rating
       %th{:class => highlight('release_date')}
-        %a#release_date_header=sortable "release_date"
+        %a#release_date_header{:href => "#{movies_path}?order=release_date"} Release Date
       %th More Info
+
+
   %tbody
     - @movies.each do |movie|
       %tr
