@@ -1,7 +1,6 @@
 # Class MoviesController
 class MoviesController < ApplicationController
   helper_method :highlight
-
   def movie_params
     params.require(:movie).permit(:title, :rating, :description, :release_date)
   end
@@ -23,21 +22,28 @@ class MoviesController < ApplicationController
       session[:order] = params[:order]
     end
 
+    new_rating_param = !params[:ratings].nil?
+    new_order_param = !params[:order].nil?
+    session_order = !session[:order].nil?
+    session_rating = !session[:ratings].nil?
+
     # if no new params and existing session, pick up where the user left off
-    if (params[:ratings].nil? && !session[:ratings].nil?) || (params[:order].nil? && !session[:order].nil?)
-      redirect_to movies_path('ratings': session[:ratings], 'order': session[:order])
+    if !new_rating_param && !new_order_param
+      if session_rating
+        redirect_to movies_path('ratings': session[:ratings], 'order': session[:order])
+      elsif session_order
+        redirect_to movies_path('order': session[:order])
+      else
+        @movies = Movie.all
+      end
 
       # if new param for rating, update with new rating and existing order
-    elsif !params[:ratings].nil? || !params[:order].nil?
-      @movies = if !params[:ratings].nil?
-                  Movie.where(rating: params[:ratings].keys).order(session[:order])
-                elsif !params[:order].nil?
-                  Movie.all.order(session[:order])
-                end
-    elsif !session[:ratings].nil? || !session[:order].nil?
+    elsif new_rating_param
+      @movies = Movie.where(rating: params[:ratings].keys).order(session[:order])
+    elsif session_rating || session_order
       redirect_to movies_path('ratings': session[:ratings], 'order': session[:order])
     else
-      @movies = Movie.all
+      @movies = Movie.all.order(session[:order])
     end
   end
 

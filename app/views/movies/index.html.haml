@@ -11,11 +11,11 @@
 %table#movies.table.table-striped.col-md-12
   %thead
     %tr
-      %th{:class => highlight('title')}
+      %th{class: highlight('title')}
         %a#title_header{href: movies_path({order: 'title'})} Movie Title
-      %th{:class => highlight('rating')}
-        %a#rating_header{href: movies_path({order:  'rating'})} Rating
-      %th{:class => highlight('release_date')}
+      %th{class: highlight('rating')}
+        %a#rating_header{href: movies_path({order: 'rating'})} Rating
+      %th{class: highlight('release_date')}
         %a#release_date_header{href: movies_path({order: 'release_date'})} Release Date
       %th More Info
 
