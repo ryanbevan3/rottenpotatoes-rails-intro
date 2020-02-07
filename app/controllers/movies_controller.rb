@@ -25,7 +25,7 @@ class MoviesController < ApplicationController
 
     # if no new params and existing session, pick up where the user left off
     if (params[:ratings].nil? && !session[:ratings].nil?) || (params[:order].nil? && !session[:order].nil?)
-      redirect_to movies_path('ratings' => session[:ratings], 'order' => session[:order])
+      redirect_to movies_path('ratings': session[:ratings], 'order': session[:order])
 
       # if new param for rating, update with new rating and existing order
     elsif !params[:ratings].nil? || !params[:order].nil?
@@ -35,7 +35,7 @@ class MoviesController < ApplicationController
                   Movie.all.order(session[:order])
                 end
     elsif !session[:ratings].nil? || !session[:order].nil?
-      redirect_to movies_path('ratings' => session[:ratings], 'order' => session[:order])
+      redirect_to movies_path('ratings': session[:ratings], 'order': session[:order])
     else
       @movies = Movie.all
     end
