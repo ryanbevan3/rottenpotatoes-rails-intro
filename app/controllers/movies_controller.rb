@@ -14,21 +14,23 @@ class MoviesController < ApplicationController
 
   def index
     @all_ratings = %w[G PG PG-13 R]
+
+    # use sessions and params to remember what the user previously selected
     session[:ratings] = params[:ratings] unless params[:ratings].nil?
     session[:order] = params[:order] unless params[:order].nil?
-    
-    if (params[:ratings].nil? && !session[:ratings].nil?) || (params[:order].nil? && !session[:order].nil?)
-      redirect_to movies_path('ratings' => session[:ratings], 'order' => session[:order])
+
+    if params[:ratings].nil? || params[:order].nil?
+      if !session[:ratings].nil? && !session[:order].nil?
+        redirect_to movies_path('ratings' => session[:ratings], 'order' => session[:order])
+      end
     elsif (@movies = if !params[:ratings].nil?
                        Movie.where(rating: params[:ratings].keys).order(session[:order])
                      elsif !params[:order].nil?
                        Movie.all.order(session[:order])
+                     else
+                       @movies = Movie.all
                      end)
-    elsif !session[:ratings].nil? || !session[:order].nil?
-      redirect_to movies_path('ratings' => session[:ratings], 'order' => session[:order])
     end
-  else
-    @movie = Movie.all
   end
 
   def new
