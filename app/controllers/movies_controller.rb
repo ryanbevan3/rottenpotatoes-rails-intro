@@ -16,14 +16,16 @@ class MoviesController < ApplicationController
 
   def index
     @all_ratings = %w[G PG PG-13 R]
-    session[:ratings] = params[:ratings] unless params[:ratings].nil?
-    if !params[:ratings].nil?
+    if !params[:ratings].nil? && !sort_column.nil?
       array_ratings = params[:ratings].keys
       @movies = Movie.where(rating: array_ratings).order(sort_column)
-    else
+    elsif !params[:ratings].nil?
+      @movie = Movie.where(rating: array_ratings)
+    elsif !sort_column.nil?
       @movies = Movie.order(sort_column)
+    else
+      @movies = Movie.all
     end
-
   end
 
   def new
